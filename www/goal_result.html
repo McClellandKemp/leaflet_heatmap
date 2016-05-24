@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="utf-8"/>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+      <script src="plugins/Leaflet.heat-gh-pages/dist/leaflet-heat.js"></script>
+      <script src="plugins/master/dist/Leaflet.Coordinates-0.1.5.src.js"></script>
+      <style>
+        #image-map {
+          width: 100%;
+          height: 700px;
+          border: 1px solid #ccc;
+          margin-bottom: 10px;
+        }
+      </style>
+    </head>
+    <body>
+    <div id="image-map"></div>
+    <script>
+
+    var addressPoints = [
+      [-415.117940654745, 355.282697118819],
+      [-464.628468283918, 356.437745432369],
+      [-400.817194486735, 355.918506117538],
+      [-449.023916466394, 356.960578560829],
+      [-400.678242439171, 356.344623416662],
+      [-437.25208273856, 355.000149445608],
+      [-411.573072504252, 356.987252379302],
+      [-434.826613425976, 356.99118716456],
+      [-450.956196255283, 356.46770136198],
+      [-454.540364722488, 356.918227747083]];
+
+    var map = L.map('image-map', {
+      minZoom: 1,
+      maxZoom: 4,
+      center: [-650, 270],
+      zoom: 1,
+      crs: L.CRS.Simple
+    });
+    // dimensions of the image
+    var w = 4000,
+        h = 5500,
+        url = 'http://i.imgur.com/j6yH5E3.png';
+
+    // calculate the edges of the image, in coordinate space
+    var southWest = map.unproject([0, h], map.getMaxZoom()-1);
+    var northEast = map.unproject([w, 0], map.getMaxZoom()-1);
+    var bounds = new L.LatLngBounds(southWest, northEast);
+
+    // add the image overlay,
+    // so that it covers the entire map
+    L.imageOverlay(url, bounds).addTo(map);
+
+    // tell leaflet that the map is exactly as big as the image
+    map.setMaxBounds(bounds);
+
+    addressPoints = addressPoints.map(function (p) { return [p[0], p[1]]; });
+
+    L.heatLayer(addressPoints, blur = 5).addTo(map);
+    </script>
+  </body>
+</html>
