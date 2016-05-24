@@ -26,7 +26,7 @@
     // store these on $el as a data value called "state".
     if (!$el.data("state")) {
 
-      var map = L.map({
+      var map = L.map($el.id, {
         minZoom: 1,
         maxZoom: 4,
         center: [-650, 270],
